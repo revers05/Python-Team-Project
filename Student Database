@@ -34,10 +34,16 @@ conn.execute('''INSERT INTO students (first_name, last_name, age, gender, addres
 # Commit the changes to the database
 conn.commit()
 
-# Query the table and print the results
-cursor = conn.execute('SELECT * FROM students')
-for row in cursor:
-    print(row)
+# Create a mainline that will display the information in the database
+def main():
+    # Query the table and print the results
+    cursor = conn.execute('SELECT * FROM students')
+    print('ID  First      Last      Age Gender    Address         Email                          Phone Number')
+    print('--------------------------------------------------------------------------------------------------')
+    for row in cursor:
+        print(f'{row[0]:3} {row[1]:10} {row[2]:8} {row[3]:3} {row[4]:10} {row[5]:15} {row[6]:30} {row[7]:10}')
+
+main()
 
 # Close the connection to the database
 conn.close()
