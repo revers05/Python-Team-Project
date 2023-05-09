@@ -1,0 +1,61 @@
+import sqlite3
+
+# Connect to the database
+conn = sqlite3.connect('students.db')
+
+# Create a table to store student information
+conn.execute('''CREATE TABLE IF NOT EXISTS students (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    first_name TEXT NOT NULL,
+                    last_name TEXT NOT NULL,
+                    age INTEGER NOT NULL,
+                    gender TEXT NOT NULL,
+                    address TEXT NOT NULL,
+                    email TEXT NOT NULL,
+                    phone_number TEXT NOT NULL
+                );''')
+
+# Insert some sample data into the table
+conn.execute('''INSERT INTO students (first_name, last_name, age, gender, address, email, phone_number)
+                VALUES ('John', 'Doe', 18, 'Male', '123 Main St', 'johndoe@example.com', '555-1234'),
+                       ('Jane', 'Smith', 19, 'Female', '456 Oak St', 'janesmith@example.com', '555-5678'),
+                       ('Bob', 'Johnson', 20, 'Male', '789 Pine St', 'bobjohnson@example.com', '555-9012'),
+                       ('Sally', 'Jones', 21, 'Female', '234 Maple St', 'sallyjones@example.com', '555-3456'),
+                       ('Mike', 'Brown', 22, 'Male', '567 Elm St', 'mikebrown@example.com', '555-7890'),
+                       ('Mary', 'Davis', 23, 'Female', '890 Cedar St', 'marydavis@example.com', '555-2345'),
+                       ('Tom', 'Wilson', 24, 'Male', '111 Birch St', 'tomwilson@example.com', '555-6789'),
+                       ('Emily', 'Lee', 25, 'Female', '222 Pine St', 'emilylee@example.com', '555-0123'),
+                       ('Chris', 'Clark', 26, 'Male', '333 Oak St', 'chrisclark@example.com', '555-4567'),
+                       ('Linda', 'Smith', 27, 'Female', '444 Elm St', 'lindasmith@example.com', '555-8901')
+                ;''')
+
+# Commit the changes to the database
+conn.commit()
+
+# Query the table and print the results
+cursor = conn.execute('SELECT * FROM students')
+for row in cursor:
+    print(row)
+
+# Ask the user which record they want to edit
+record_id = int(input('Enter the ID of the record you want to edit: '))
+
+# Ask the user which field they want to edit
+field_name = input('Enter the name of the field you want to edit: ')
+
+# Ask the user for the new value of the field
+new_value = input('Enter the new value of the field: ')
+
+# Update the record in the database
+conn.execute(f"UPDATE students SET {field_name} = ? WHERE id = ?", (new_value, record_id))
+
+# Commit the changes to the database
+conn.commit()
+
+# Query the table and print the updated results
+cursor = conn.execute('SELECT * FROM students')
+for row in cursor:
+    print(row)
+
+# Close the connection to the database
+conn.close()
